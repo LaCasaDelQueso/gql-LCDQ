@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "[alima-monorepo] Linting for correct PEP8 format."
+PEP8_ERR=$(poetry run flake8 . --count --exit-zero --max-complexity=40 --max-line-length=127 --statistics --exclude=*/*/.venv/,projects/api/*)
+if [ $PEP8_ERR -eq 0 ]
+then
+    echo "[alima-monorepo] Num Errors: $PEP8_ERR"
+    exit 0
+else
+    echo "[alima-monorepo] Error: $PEP8_ERR" >&2
+    exit 1
+fi

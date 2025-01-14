@@ -1,0 +1,66 @@
+#!/bin/bash 
+
+validate_test_response() {
+    ## Error testing function
+    ## Usage: 
+    ## validate_test_response $? "<Testing module>"
+    if [ $1 -eq 0 ]
+    then
+        echo "[alima-monorepo] $2 OK!"
+    else
+        echo "[alima-monorepo] $2 ERROR!" >&2
+        return 1
+    fi
+    return 0
+}
+
+## Test Base Project
+echo "[alima-monorepo] Testing Base project"
+cd projects/base/
+poetry install 
+poetry run pytest
+validate_test_response $? "Test Base"
+if [ $? -eq 0 ]
+then
+    echo "."
+    cd ../../
+else
+    cd ../../
+    exit 1
+fi
+
+## Test Monolyth Project
+# echo "[alima-monorepo] Testing Monolyth project"
+# cd projects/monolyth/
+# poetry install 
+# poetry run pytest
+# echo "[alima-monorepo] Test Monolyth OK!"
+# cd ../../
+
+## Test GQL Project
+echo "[alima-monorepo] Testing GraphQL API project"
+cd projects/gqlapi/
+poetry install 
+# [TODO] add the rest of the unit tests
+poetry run pytest -vs tests/unit/test_firebase.py  
+validate_test_response $? "Unit Test GraphQL API"
+if [ $? -eq 0 ]
+then
+    echo "."
+else
+    cd ../../
+    exit 1
+fi
+# [TODO] implement integration test deployment
+# poetry run pytest -vs tests/integration/
+# validate_test_response $? "Integration Test GraphQL API"
+# if [ $? -eq 0 ]
+# then
+#     echo "."
+#     cd ../../
+# else
+#     cd ../../
+#     exit 1
+# fi
+
+exit 0
