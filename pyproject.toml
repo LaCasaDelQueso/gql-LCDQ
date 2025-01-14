@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "gql-lcdq"
+name = "gql-standalone"
 version = "0.1.0"
 description = "Alima's Standalone GraphQL API"
 authors = ["jorgeviz", "ferreyyes"]
