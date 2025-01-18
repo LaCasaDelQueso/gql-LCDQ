@@ -61,8 +61,9 @@ RESEND_API_KEY = cfg("RESEND_API_KEY", cast=str, default="")
 RESEND_SINGLE_SENDER = cfg("RESEND_SINGLE_SENDER", cast=str, default="")
 HILOS_API_KEY = cfg("HILOS_API_KEY", cast=str, default="")
 CLOUDINARY_BASE_URL = (
-    "https://res.cloudinary.com/neutro-mx/image/upload/c_scale,f_auto,q_auto,"
+    "https://res.cloudinary.com/dbon450pk/image/upload/c_scale,f_auto,q_auto,"
 )
+ORDEN_MAILS_FOR_SUPPLIER = cfg("ORDEN_MAILS_FOR_SUPPLIER", cast=bool, default=False)
 
 # database SQL
 DATABASE_DEFAULT = cfg("RDS_DB_NAME", cast=str, default="postgres")

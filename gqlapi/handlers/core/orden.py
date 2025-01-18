@@ -96,7 +96,7 @@ from gqlapi.domain.models.v2.utils import (
     SellingOption,
     UOMType,
 )
-from gqlapi.config import ALIMA_SUPPORT_PHONE, APP_TZ
+from gqlapi.config import ALIMA_SUPPORT_PHONE, APP_TZ, RESEND_SINGLE_SENDER, ORDEN_MAILS_FOR_SUPPLIER
 from gqlapi.config import SENDGRID_SINGLE_SENDER
 from gqlapi.errors import GQLApiErrorCodeType, GQLApiException
 from gqlapi.repository.user.core_user import CoreUserRepositoryInterface
@@ -725,59 +725,59 @@ class OrdenHandler(OrdenHandlerInterface):
                 supplier_business_account=supp_bus_acc,
                 supplier_unit=sup_unit,
             )
-            # send supplier notification - email
-            if (
-                sup_business.notification_preference == "email"
-                and supp_bus_acc.email
-                and orden_type == OrdenType.NORMAL
-            ):
-                try:
-                    await send_supplier_email_confirmation(
-                        f"Pedido de {rest_branch.branch_name}",
-                        from_email={
-                            "email": core_user.email,
-                            "name": rest_branch.branch_name,
-                        },
-                        to_email={
-                            "email": supp_bus_acc.email,
-                            "name": sup_business.name,
-                        },
-                        orden_details=OrdenDetails(**orden_details),
-                        branch_name=rest_branch.branch_name,
-                        contact_number=(
-                            supp_bus_acc.phone_number
-                            if supp_bus_acc.phone_number
-                            else ""
-                        ),
-                        delivery_address=rest_branch.full_address,
-                        cart_products=cart_res["cart_product_res"],
-                    )
-                    # [TODO] send another email with link to upload invoice
-                except Exception as e:
-                    logger.warning("Issues sending supplier email")
-                    logger.error(e)
+            if ORDEN_MAILS_FOR_SUPPLIER:
+                if (
+                    sup_business.notification_preference == "email"
+                    and supp_bus_acc.email
+                    and orden_type == OrdenType.NORMAL
+                ):
+                    try:
+                        await send_supplier_email_confirmation(
+                            f"Pedido de {rest_branch.branch_name}",
+                            from_email={
+                                "email": core_user.email,
+                                "name": rest_branch.branch_name,
+                            },
+                            to_email={
+                                "email": supp_bus_acc.email,
+                                "name": sup_business.name,
+                            },
+                            orden_details=OrdenDetails(**orden_details),
+                            branch_name=rest_branch.branch_name,
+                            contact_number=(
+                                supp_bus_acc.phone_number
+                                if supp_bus_acc.phone_number
+                                else ""
+                            ),
+                            delivery_address=rest_branch.full_address,
+                            cart_products=cart_res["cart_product_res"],
+                        )
+                        # [TODO] send another email with link to upload invoice
+                    except Exception as e:
+                        logger.warning("Issues sending supplier email")
+                        logger.error(e)
             # send supplier notification - whatsapp
-            elif (
-                sup_business.notification_preference == "whatsapp"
-                and supp_bus_acc.phone_number
-                and orden_type == OrdenType.NORMAL
-            ):
-                try:
-                    send_supplier_whatsapp_confirmation(
-                        to_wa={
-                            "phone": supp_bus_acc.phone_number,
-                            "name": sup_business.name,
-                        },
-                        orden_details=OrdenDetails(**orden_details),
-                        branch_name=rest_branch.branch_name,
-                        contact_number=ALIMA_SUPPORT_PHONE,
-                        delivery_address=rest_branch.full_address,
-                        cart_products=cart_res["cart_product_res"],
-                    )
-                    # [TODO] send another wa with link to upload invoice
-                except Exception as e:
-                    logger.warning("Issues sending supplier email")
-                    logger.error(e)
+            # elif (
+            #     sup_business.notification_preference == "whatsapp"
+            #     and supp_bus_acc.phone_number
+            #     and orden_type == OrdenType.NORMAL
+            # ):
+            #     try:
+            #         send_supplier_whatsapp_confirmation(
+            #             to_wa={
+            #                 "phone": supp_bus_acc.phone_number,
+            #                 "name": sup_business.name,
+            #             },
+            #             orden_details=OrdenDetails(**orden_details),
+            #             branch_name=rest_branch.branch_name,
+            #             contact_number=ALIMA_SUPPORT_PHONE,
+            #             delivery_address=rest_branch.full_address,
+            #             cart_products=cart_res["cart_product_res"],
+            #         )
+            #         # [TODO] send another wa with link to upload invoice
+            #     except Exception as e:
+            #         logger.warning("Issues sending supplier email")
+            #         logger.error(e)
             # send restaurant notification
             if orden_type == OrdenType.NORMAL:
                 # send confirmation to the user that created the orden
@@ -994,58 +994,59 @@ class OrdenHandler(OrdenHandlerInterface):
                 supplier_unit=sup_unit,
             )
             # send supplier notification - email
-            if (
-                sup_business.notification_preference == "email"
-                and supp_bus_acc.email
-                and orden_type == OrdenType.NORMAL
-            ):
-                try:
-                    await send_supplier_email_confirmation(
-                        f"Pedido de {rest_branch.branch_name}",
-                        from_email={
-                            "email": core_user.email,
-                            "name": rest_branch.branch_name,
-                        },
-                        to_email={
-                            "email": supp_bus_acc.email,
-                            "name": sup_business.name,
-                        },
-                        orden_details=OrdenDetails(**orden_details),
-                        branch_name=rest_branch.branch_name,
-                        contact_number=(
-                            supp_bus_acc.phone_number
-                            if supp_bus_acc.phone_number
-                            else ""
-                        ),
-                        delivery_address=rest_branch.full_address,
-                        cart_products=cart_res["cart_product_res"],
-                    )
-                    # [TODO] send another email with link to upload invoice
-                except Exception as e:
-                    logger.warning("Issues sending supplier email")
+            if ORDEN_MAILS_FOR_SUPPLIER:
+                if (
+                    sup_business.notification_preference == "email"
+                    and supp_bus_acc.email
+                    and orden_type == OrdenType.NORMAL
+                ):
+                    try:
+                        await send_supplier_email_confirmation(
+                            f"Pedido de {rest_branch.branch_name}",
+                            from_email={
+                                "email": core_user.email,
+                                "name": rest_branch.branch_name,
+                            },
+                            to_email={
+                                "email": supp_bus_acc.email,
+                                "name": sup_business.name,
+                            },
+                            orden_details=OrdenDetails(**orden_details),
+                            branch_name=rest_branch.branch_name,
+                            contact_number=(
+                                supp_bus_acc.phone_number
+                                if supp_bus_acc.phone_number
+                                else ""
+                            ),
+                            delivery_address=rest_branch.full_address,
+                            cart_products=cart_res["cart_product_res"],
+                        )
+                        # [TODO] send another email with link to upload invoice
+                    except Exception as e:
+                        logger.warning("Issues sending supplier email")
                     logger.error(e)
             # send supplier notification - whatsapp
-            if (
-                sup_business.notification_preference == "whatsapp"
-                and supp_bus_acc.phone_number
-                and orden_type == OrdenType.NORMAL
-            ):
-                try:
-                    send_supplier_whatsapp_confirmation(
-                        to_wa={
-                            "phone": supp_bus_acc.phone_number,
-                            "name": sup_business.name,
-                        },
-                        orden_details=OrdenDetails(**orden_details),
-                        branch_name=rest_branch.branch_name,
-                        contact_number=ALIMA_SUPPORT_PHONE,
-                        delivery_address=rest_branch.full_address,
-                        cart_products=cart_res["cart_product_res"],
-                    )
-                    # [TODO] send another wa with link to upload invoice
-                except Exception as e:
-                    logger.warning("Issues sending supplier email")
-                    logger.error(e)
+            # if (
+            #     sup_business.notification_preference == "whatsapp"
+            #     and supp_bus_acc.phone_number
+            #     and orden_type == OrdenType.NORMAL
+            # ):
+            #     try:
+            #         send_supplier_whatsapp_confirmation(
+            #             to_wa={
+            #                 "phone": supp_bus_acc.phone_number,
+            #                 "name": sup_business.name,
+            #             },
+            #             orden_details=OrdenDetails(**orden_details),
+            #             branch_name=rest_branch.branch_name,
+            #             contact_number=ALIMA_SUPPORT_PHONE,
+            #             delivery_address=rest_branch.full_address,
+            #             cart_products=cart_res["cart_product_res"],
+            #         )
+            #         # [TODO] send another wa with link to upload invoice
+            #     except Exception as e:
+            #         logger.warning("Issues sending supplier email")
+            #         logger.error(e)
             # send restaurant notification
             if orden_type == OrdenType.NORMAL:
                 # send confirmation to the user that created the orden
@@ -1287,57 +1288,58 @@ class OrdenHandler(OrdenHandlerInterface):
             if (rest_business_account and rest_business_account.email)
             else core_user.email
         )
-        if (
-            supp_bus.notification_preference == "email"
-            and supp_bus_acc.email
-            and modified_details
-        ):
-            try:
-                await send_supplier_email_confirmation(
-                    f"Pedido Actualizado de {rest_branch.branch_name}",
-                    from_email={
-                        "email": client_email,
-                        "name": rest_branch.branch_name,
-                    },
-                    to_email={
-                        "email": supp_bus_acc.email,
-                        "name": supp_bus.name,
-                    },
-                    orden_details=OrdenDetails(**orden_details),
-                    branch_name=rest_branch.branch_name,
-                    contact_number=(
-                        supp_bus_acc.phone_number if supp_bus_acc.phone_number else ""
-                    ),
-                    delivery_address=rest_branch.full_address,
-                    cart_products=cart_res["cart_product_res"],  # type: ignore - is guaranteed in logic
-                )
-                # [TODO] send another email with link to upload invoice
-            except Exception as e:
-                logger.warning("Issues sending supplier email")
-                logger.error(e)
-        # send supplier notification - whatsapp
-        if (
-            supp_bus.notification_preference == "whatsapp"
-            and supp_bus_acc.phone_number
-            and modified_details
-        ):
-            try:
-                send_supplier_whatsapp_confirmation(
-                    to_wa={
-                        "phone": supp_bus_acc.phone_number,
-                        "name": supp_bus.name,
-                    },
-                    branch_name=rest_branch.branch_name,
-                    orden_details=OrdenDetails(**orden_details),
-                    contact_number=ALIMA_SUPPORT_PHONE,
-                    delivery_address=rest_branch.full_address,
-                    cart_products=cart_res["cart_product_res"],  # type: ignore - is guaranteed in logic
-                    notification_type="update_orden",
-                )
-                # [TODO] send another email with link to upload invoice
-            except Exception as e:
-                logger.warning("Issues sending supplier whatsapp")
-                logger.error(e)
+        if ORDEN_MAILS_FOR_SUPPLIER:
+            if (
+                supp_bus.notification_preference == "email"
+                and supp_bus_acc.email
+                and modified_details
+            ):
+                try:
+                    await send_supplier_email_confirmation(
+                        f"Pedido Actualizado de {rest_branch.branch_name}",
+                        from_email={
+                            "email": client_email,
+                            "name": rest_branch.branch_name,
+                        },
+                        to_email={
+                            "email": supp_bus_acc.email,
+                            "name": supp_bus.name,
+                        },
+                        orden_details=OrdenDetails(**orden_details),
+                        branch_name=rest_branch.branch_name,
+                        contact_number=(
+                            supp_bus_acc.phone_number if supp_bus_acc.phone_number else ""
+                        ),
+                        delivery_address=rest_branch.full_address,
+                        cart_products=cart_res["cart_product_res"],  # type: ignore - is guaranteed in logic
+                    )
+                    # [TODO] send another email with link to upload invoice
+                except Exception as e:
+                    logger.warning("Issues sending supplier email")
+                    logger.error(e)
+        # # send supplier notification - whatsapp
+        # if (
+        #     supp_bus.notification_preference == "whatsapp"
+        #     and supp_bus_acc.phone_number
+        #     and modified_details
+        # ):
+        #     try:
+        #         send_supplier_whatsapp_confirmation(
+        #             to_wa={
+        #                 "phone": supp_bus_acc.phone_number,
+        #                 "name": supp_bus.name,
+        #             },
+        #             branch_name=rest_branch.branch_name,
+        #             orden_details=OrdenDetails(**orden_details),
+        #             contact_number=ALIMA_SUPPORT_PHONE,
+        #             delivery_address=rest_branch.full_address,
+        #             cart_products=cart_res["cart_product_res"],  # type: ignore - is guaranteed in logic
+        #             notification_type="update_orden",
+        #         )
+        #         # [TODO] send another email with link to upload invoice
+        #     except Exception as e:
+        #         logger.warning("Issues sending supplier whatsapp")
+        #         logger.error(e)
         if modified_details:
             # send confirmation to the user that updated the orden - if changed orden details
             try:
@@ -1362,29 +1364,30 @@ class OrdenHandler(OrdenHandlerInterface):
                 logger.error(e)
         if status and not modified_details:
             try:
-                if (
-                    status == OrdenStatusType.CANCELED
-                    or status == OrdenStatusType.DELIVERED
-                ):
-                    if supp_bus_acc.email:
-                        # send email to supplier and restaurant
-                        await send_supplier_changed_status_v2(
-                            to_email={
-                                "email": (
-                                    supp_bus_acc.email
-                                ),
-                                "name": supp_bus.name,
-                            },
-                            status=status,
-                            from_email={
-                                "email": SENDGRID_SINGLE_SENDER,
-                                "name": "Alima",
-                            },
-                            orden_details=OrdenDetails(**orden_details),
-                            orden_number=orden["orden_number"],
-                            rest_branch_name=rest_branch.branch_name,
-                            cel_contact=supp_bus_acc.phone_number,  # type: ignore
-                        )
+                if ORDEN_MAILS_FOR_SUPPLIER:
+                    if (
+                        status == OrdenStatusType.CANCELED
+                        or status == OrdenStatusType.DELIVERED
+                    ):
+                        if supp_bus_acc.email:
+                            # send email to supplier and restaurant
+                            await send_supplier_changed_status_v2(
+                                to_email={
+                                    "email": (
+                                        supp_bus_acc.email
+                                    ),
+                                    "name": supp_bus.name,
+                                },
+                                status=status,
+                                from_email={
+                                    "email": RESEND_SINGLE_SENDER,
+                                    "name": "Alima",
+                                },
+                                orden_details=OrdenDetails(**orden_details),
+                                orden_number=orden["orden_number"],
+                                rest_branch_name=rest_branch.branch_name,
+                                cel_contact=supp_bus_acc.phone_number,  # type: ignore
+                            )
                 await send_restaurant_changed_status_v2(
                     to_email={
                         "email": client_email,
