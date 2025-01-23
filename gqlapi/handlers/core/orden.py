@@ -2431,6 +2431,7 @@ def get_payment_complement(
                     if isinstance(mxi["xml_file"], bytes)
                     else None
                 ),
+                invoice_number=mxi["invoice_number"]
             )
             return payment_complement
     return None

@@ -81,6 +81,7 @@ class OrdenGQL(Orden):
 class MxInvoiceComplementGQL:
     id: UUID
     sat_invoice_uuid: UUID
+    invoice_number: Optional[str] = None
     pdf_file: Optional[str] = None
     xml_file: Optional[str] = None
     total: float

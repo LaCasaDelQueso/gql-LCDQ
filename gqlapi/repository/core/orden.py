@@ -932,6 +932,7 @@ class OrdenPaymentStatusRepository(
                                     if isinstance(mxi["xml_file"], bytes)
                                     else None
                                 ),
+                                invoice_number=mxi["invoice_number"]
                             )
                     pt_tmp.ordenes.append(_pro)
 
@@ -1168,6 +1169,8 @@ class OrdenPaymentStatusRepository(
                     ON pr.id = pro.payment_receipt_id
                 JOIN last_orden_details od
                     ON od.orden_id = pro.orden_id
+                JOIN mx_invoice_complement mic
+                    ON pro.mx_invoice_complement_id = mic.id
             """,
             core_columns=[
                 "pr.*",
@@ -1178,6 +1181,7 @@ class OrdenPaymentStatusRepository(
                 "pro.created_by as pro_created_by",
                 "pro.created_at as pro_created_at",
                 "pro.mx_invoice_complement_id as mx_invoice_complement_id",
+                "mic.invoice_number as invoice"
             ],
             filter_values=filters_str,
             values=values,
