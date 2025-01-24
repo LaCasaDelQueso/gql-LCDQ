@@ -5,6 +5,7 @@ import json
 from typing import Optional, List
 from uuid import UUID
 import uuid
+import time
 from gqlapi.domain.interfaces.v2.supplier.supplier_invoice import INVOICE_PAYMENT_MAP
 from gqlapi.lib.environ.environ.environ import get_app
 from gqlapi.handlers.integrations.integrations import IntegrationsWebhookandler
@@ -1520,6 +1521,8 @@ class OrdenQuery:
         to_date: Optional[date] = None,
     ) -> List[OrdenResult]:  # type: ignore
         logger.info("get ordenes")
+        print("GET ORDENES")
+        inicio = time.time()
         # instantiate handler
         _handler = OrdenHandler(
             orden_repo=OrdenRepository(info),
@@ -1548,6 +1551,9 @@ class OrdenQuery:
                 from_date,
                 to_date,
             )
+            fin = time.time()
+            tiempo_transcurrido = fin - inicio  # Calcula el tiempo transcurrido
+            print(f"Tiempo transcurrido: {tiempo_transcurrido:.2f} segundos")
             return _resp
         except GQLApiException as ge:
             logger.warning(ge)
