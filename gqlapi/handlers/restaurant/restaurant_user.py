@@ -112,7 +112,7 @@ class RestaurantUserHandler(RestaurantUserHandlerInterface):
         try:
             # new user welcome email
             await send_new_resto_user_welcome_msg(
-                subject="Bienvenido a Alima",
+                subject="Bienvenido",
                 to_email={"name": f"{first_name} {last_name}", "email": email},
             )
         except Exception as e:
@@ -599,7 +599,7 @@ class RestaurantEmployeeHandler(RestaurantEmployeeHandlerInterface):
         try:
             # new employee welcome email
             await send_employee_welcome_msg(
-                subject=f"Bienvenido a Alima - {rest_business.get('name', '')}",
+                subject=f"Bienvenido - {rest_business.get('name', '')}",
                 to_email={"name": f"{name} {last_name}", "email": email},
                 business_name=rest_business.get("name", ""),
                 tmp_pswd=pwd,

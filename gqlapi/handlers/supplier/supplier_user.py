@@ -659,7 +659,7 @@ class SupplierEmployeeHandler(SupplierEmployeeHandlerInterface):
         try:
             # new employee welcome email
             await send_employee_welcome_msg(
-                subject=f"Bienvenido a Alima - {sup_business.get('name', '')}",
+                subject=f"Bienvenido - {sup_business.get('name', '')}",
                 to_email={"name": f"{name} {last_name}", "email": email},
                 business_name=sup_business.get("name", ""),
                 tmp_pswd=pwd,

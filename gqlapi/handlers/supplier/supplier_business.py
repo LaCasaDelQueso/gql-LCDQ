@@ -156,7 +156,7 @@ class SupplierBusinessHandler(SupplierBusinessHandlerInterface):
         try:
             # new user welcome email
             await send_new_sup_user_welcome_msg(
-                subject="Bienvenido a Alima",
+                subject="Bienvenido",
                 to_email={"name": f"{name}", "email": email},
             )
         except Exception as e:

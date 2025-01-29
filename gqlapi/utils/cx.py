@@ -72,8 +72,7 @@ async def send_business_docs(
             <li>Razón Social: {business_info.get("legal_business_name", "NO SE HA SUBIDO LA RAZON SOCIAL")}</li>
         </ul>
         <br />
-        <p>Saludos,</p>
-        <p>Alima Team</p>
+        <p>Saludos</p>
     """
     # send email
     # Comment
