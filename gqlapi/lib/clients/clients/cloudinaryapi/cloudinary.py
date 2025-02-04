@@ -53,6 +53,7 @@ class CloudinaryApi:
     """
 
     def __init__(self, env) -> None:
+        cloudinary.config()
         self.base_folder = "PROD" if env.lower() == "prod" else "STG"
 
     def upload(
