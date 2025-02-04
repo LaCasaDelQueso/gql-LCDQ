@@ -854,17 +854,17 @@ class SupplierProductHandler(SupplierProductHandlerInterface):
         # validate file
         xls = pd.ExcelFile(product_stock_file)
         if len(xls.sheet_names) > 1:
-            if "Sheet1" not in xls.sheet_names:
+            if "Inventario" not in xls.sheet_names:
                 return [
                     SupplierProductsStockBatch(
                         status=False,
-                        msg="El Archivo debe tener una sola hoja, o con nombre `Sheet1`",
+                        msg="El Archivo debe tener una sola hoja, o con nombre `Inventario`",
                     )
                 ]
             else:
-                df = pd.read_excel(xls, "Sheet1", dtype={"sku": str})
+                df = pd.read_excel(xls, "Inventario", dtype={"sku": str})
         else:
-            df = pd.read_excel(xls, xls.sheet_names[0], dtype={"sku": str})
+            df = pd.read_excel(xls, "Inventario", dtype={"sku": str})
         data = self.validate_cols_supplier_products_stock_file(df)
         # get supplier business
         core_user, supplier_business = await self.fetch_supplier_business(firebase_id)
