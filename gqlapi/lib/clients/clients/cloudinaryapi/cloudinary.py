@@ -72,6 +72,7 @@ class CloudinaryApi:
                 overwrite=True,
                 invalidate=True,
                 resource_type="image",
+                format="png"
             )
             # Transform the image to PNG format
             png_transformation = {"format": "png"}
