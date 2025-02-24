@@ -230,8 +230,7 @@ async def send_alima_invoice_pending_notification(
         content=msg_content,
     )
 
-# Add depricated because maybe attchs need update
-@deprecated("Need update attchs for Resend", "gqlapi.handlers.services.mails")
+
 async def send_restaurant_new_invoice_complement_notification(
     email_to: str,
     supplier_business_name: str,
@@ -344,9 +343,6 @@ async def send_account_inactive(email_to: str, name: str, month: str) -> bool:
 
 
 # Supply Invoices Emails
-
-# Add depricated because maybe attchs need update
-@deprecated("Need update attchs for Resend", "gqlapi.handlers.services.mails")
 async def send_new_consolidated_invoice_notification(
     email_to: str,
     supplier_business_name: str,
@@ -396,8 +392,7 @@ async def send_new_consolidated_invoice_notification(
         sender_name=supplier_business_name,
     )
 
-# Add depricated because maybe attchs need update
-@deprecated("Need update attchs for Resend", "gqlapi.handlers.services.mails")
+
 async def send_restaurant_new_invoice_notification(
     email_to: str,
     supplier_business_name: str,

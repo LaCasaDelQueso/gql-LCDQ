@@ -854,7 +854,7 @@ class MxInvoiceHandler(MxInvoiceHandlerInterface):
                 ]
 
                 if not await send_restaurant_new_invoice_notification(
-                    email_to=[rest_branch_mx_inv_info.email],  # type: ignore
+                    email_to=rest_branch_mx_inv_info.email,
                     restaurant_business_name=rest_branch.branch_name,
                     supplier_business_name=supplier_business.name,
                     folio=folio,
@@ -1365,7 +1365,7 @@ class MxInvoiceHandler(MxInvoiceHandlerInterface):
             ]
 
             if not await send_new_consolidated_invoice_notification(
-                email_to=[rest_branch_mx_inv_info.email],  # type: ignore
+                email_to=rest_branch_mx_inv_info.email,
                 restaurant_business_name=rest_branch.branch_name,
                 supplier_business_name=supplier_business.name,
                 folio=folio,
@@ -1613,7 +1613,7 @@ class MxInvoiceHandler(MxInvoiceHandlerInterface):
                     },
                 ]
                 if not await send_restaurant_new_invoice_complement_notification(
-                    email_to=[rest_branch_mx_inv_info.email],  # type: ignore
+                    email_to=rest_branch_mx_inv_info.email,
                     restaurant_business_name=rest_branch.branch_name,
                     supplier_business_name=supplier_business.name,
                     folio=folio,
