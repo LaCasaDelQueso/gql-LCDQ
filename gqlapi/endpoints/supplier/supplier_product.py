@@ -4,7 +4,6 @@ from io import BytesIO, StringIO
 import json
 from typing import List, Optional
 from uuid import UUID
-from gqlapi.domain.interfaces.v2.catalog.product import ProductError
 import pandas as pd
 
 import strawberry
@@ -709,7 +708,7 @@ class SupplierProductQuery:
         logger.info("Export product file")
         # validate format
         if export_format.lower() not in ["csv", "xlsx"]:
-            return ProductError(
+            return SupplierProductError(
                 msg="Invalid format",
                 code=GQLApiErrorCodeType.DATAVAL_WRONG_DATATYPE.value,
             )
@@ -719,7 +718,7 @@ class SupplierProductQuery:
             "product_price_list",
             "stock",
         ]:
-            return ProductError(
+            return SupplierProductError(
                 msg="Invalid format",
                 code=GQLApiErrorCodeType.DATAVAL_WRONG_DATATYPE.value,
             )
@@ -758,7 +757,7 @@ class SupplierProductQuery:
 
             if type == "product_price_list":
                 if not supplier_product_price_list_id or not supplier_unit_id:
-                    return ProductError(
+                    return SupplierProductError(
                         msg="invalida supplier product price list id",
                         code=GQLApiErrorCodeType.DATAVAL_WRONG_DATATYPE.value,
                     )
@@ -771,7 +770,7 @@ class SupplierProductQuery:
                 file_name = f"lista_{str(supplier_product_price_list_id)}"
             if type == "all_product_price_lists":
                 if not supplier_unit_id:
-                    return ProductError(
+                    return SupplierProductError(
                         msg="invalid supplier unit id",
                         code=GQLApiErrorCodeType.DATAVAL_WRONG_DATATYPE.value,
                     )
@@ -795,7 +794,7 @@ class SupplierProductQuery:
 
             if type == "stock":
                 if not supplier_unit_id:
-                    return ProductError(
+                    return SupplierProductError(
                         msg="invalid supplier unit id",
                         code=GQLApiErrorCodeType.DATAVAL_WRONG_DATATYPE.value,
                     )
@@ -808,7 +807,7 @@ class SupplierProductQuery:
 
             # export
             if _df.empty:
-                return ProductError(
+                return SupplierProductError(
                     msg="empty data",
                     code=GQLApiErrorCodeType.DATAVAL_WRONG_DATATYPE.value,
                 )
@@ -844,13 +843,13 @@ class SupplierProductQuery:
                 )
         except GQLApiException as ge:
             logger.warning(ge)
-            return ProductError(
+            return SupplierProductError(
                 msg=ge.msg,
                 code=int(ge.error_code),
             )
         except Exception as e:
             logger.error(e)
-            return ProductError(
+            return SupplierProductError(
                 msg="Error retrieving products",
                 code=GQLApiErrorCodeType.UNEXPECTED_ERROR.value,
             )

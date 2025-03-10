@@ -1,6 +1,7 @@
-from datetime import date
+from datetime import date, datetime
 from typing import List
 from uuid import UUID
+import pytz
 from gqlapi.lib.environ.environ.environ import get_app
 from gqlapi.lib.logger.logger.basic_logger import get_logger
 
@@ -68,6 +69,15 @@ class SupplierPriceListMutation:
             # return False
             return SupplierPriceListBatchGQL(
                 msg="Tu archivo tiene un formato incorrecto, debe de ser .xlsx",
+                prices=[],
+            )
+        utc_now = datetime.utcnow()
+        mexico_tz = pytz.timezone("America/Mexico_City")
+        mexico_now = utc_now.replace(tzinfo=pytz.utc).astimezone(mexico_tz)
+        if valid_until < mexico_now:
+            # return False
+            return SupplierPriceListBatchGQL(
+                msg="La fecha no puede ser menor a hoy",
                 prices=[],
             )
         # instantiate handlers
@@ -176,6 +186,15 @@ class SupplierPriceListMutation:
         )
         sp_handler.supplier_price_list_handler = _handler
         try:
+            utc_now = datetime.utcnow()
+            mexico_tz = pytz.timezone("America/Mexico_City")
+            mexico_now = utc_now.replace(tzinfo=pytz.utc).astimezone(mexico_tz)
+            if valid_until < mexico_now:
+                # return False
+                return SupplierPriceListBatchGQL(
+                    msg="La fecha no puede ser menor a hoy",
+                    prices=[],
+                )
             firebase_id = info.context["request"].user.firebase_user.firebase_id
             prices_feedback = await _handler.new_supplier_price_list(
                 firebase_id,
@@ -259,6 +278,15 @@ class SupplierPriceListMutation:
         )
         sp_handler.supplier_price_list_handler = _handler
         try:
+            utc_now = datetime.utcnow()
+            mexico_tz = pytz.timezone("America/Mexico_City")
+            mexico_now = utc_now.replace(tzinfo=pytz.utc).astimezone(mexico_tz)
+            if valid_until < mexico_now:
+                # return False
+                return SupplierPriceListBatchGQL(
+                    msg="La fecha no puede ser menor a hoy",
+                    prices=[],
+                )
             firebase_id = info.context["request"].user.firebase_user.firebase_id
             prices_feedback = await _handler.edit_supplier_price_list(
                 firebase_id,

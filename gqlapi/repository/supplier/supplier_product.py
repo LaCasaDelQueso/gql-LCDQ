@@ -1178,7 +1178,7 @@ class SupplierProductStockRepository(
                 odv.status <> 'canceled'
                 AND odv.supplier_unit_id = :supplier_unit_id
                 AND cp.supplier_product_id IN {sup_prods}
-                AND cp.created_at >= :min_purchase_date
+                AND odv.delivery_date AT TIME ZONE 'America/Mexico_City' AT TIME ZONE 'UTC' >= :min_purchase_date
             """,
             values={
                 "supplier_unit_id": supplier_unit_id,
