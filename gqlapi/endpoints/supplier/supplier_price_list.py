@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import List
 from uuid import UUID
 import pytz
@@ -73,8 +73,9 @@ class SupplierPriceListMutation:
             )
         utc_now = datetime.utcnow()
         mexico_tz = pytz.timezone("America/Mexico_City")
+        valid_until_datetime = datetime.combine(valid_until, datetime.min.time()).replace(tzinfo=timezone.utc)
         mexico_now = utc_now.replace(tzinfo=pytz.utc).astimezone(mexico_tz)
-        if valid_until < mexico_now:
+        if valid_until_datetime < mexico_now:
             # return False
             return SupplierPriceListBatchGQL(
                 msg="La fecha no puede ser menor a hoy",
@@ -188,8 +189,9 @@ class SupplierPriceListMutation:
         try:
             utc_now = datetime.utcnow()
             mexico_tz = pytz.timezone("America/Mexico_City")
+            valid_until_datetime = datetime.combine(valid_until, datetime.min.time()).replace(tzinfo=timezone.utc)
             mexico_now = utc_now.replace(tzinfo=pytz.utc).astimezone(mexico_tz)
-            if valid_until < mexico_now:
+            if valid_until_datetime < mexico_now:
                 # return False
                 return SupplierPriceListBatchGQL(
                     msg="La fecha no puede ser menor a hoy",
@@ -280,8 +282,9 @@ class SupplierPriceListMutation:
         try:
             utc_now = datetime.utcnow()
             mexico_tz = pytz.timezone("America/Mexico_City")
+            valid_until_datetime = datetime.combine(valid_until, datetime.min.time()).replace(tzinfo=timezone.utc)
             mexico_now = utc_now.replace(tzinfo=pytz.utc).astimezone(mexico_tz)
-            if valid_until < mexico_now:
+            if valid_until_datetime < mexico_now:
                 # return False
                 return SupplierPriceListBatchGQL(
                     msg="La fecha no puede ser menor a hoy",
