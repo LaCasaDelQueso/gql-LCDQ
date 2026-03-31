@@ -479,6 +479,7 @@ class FacturamaClientApi:
             _rmp["Issuer"] = Issuer(**_rmp["Issuer"])
             resp_taxes_list = []
             for taxes in _rmp["Taxes"]:
+                taxes.pop("Factor", None) # Cambio de Facturama
                 resp_taxes_list.append(SatTaxes(**taxes))
             _rmp["Taxes"] = resp_taxes_list
             resp_items_list = []
@@ -812,6 +813,7 @@ class FacturamaClientApi:
             _rmp["Issuer"] = Issuer(**_rmp["Issuer"])
             resp_taxes_list = []
             for taxes in _rmp["Taxes"]:
+                taxes.pop("Factor", None) # Cambio de Facturama
                 resp_taxes_list.append(SatTaxes(**taxes))
             _rmp["Taxes"] = resp_taxes_list
             resp_items_list = []
