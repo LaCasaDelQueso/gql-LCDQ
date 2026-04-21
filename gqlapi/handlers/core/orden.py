@@ -1388,21 +1388,21 @@ class OrdenHandler(OrdenHandlerInterface):
                                 rest_branch_name=rest_branch.branch_name,
                                 cel_contact=supp_bus_acc.phone_number,  # type: ignore
                             )
-                await send_restaurant_changed_status_v2(
-                    to_email={
-                        "email": client_email,
-                        "name": rest_branch.branch_name,
-                    },
-                    from_email={
-                        "email": SENDGRID_SINGLE_SENDER,
-                        "name": supp_bus.name,
-                    },
-                    status=status,
-                    orden_details=OrdenDetails(**orden_details),
-                    orden_number=orden["orden_number"],
-                    rest_branch_name=rest_branch.branch_name,
-                    cel_contact=supp_bus_acc.phone_number,  # type: ignore
-                )
+                    await send_restaurant_changed_status_v2(
+                        to_email={
+                            "email": client_email,
+                            "name": rest_branch.branch_name,
+                        },
+                        from_email={
+                            "email": SENDGRID_SINGLE_SENDER,
+                            "name": supp_bus.name,
+                        },
+                        status=status,
+                        orden_details=OrdenDetails(**orden_details),
+                        orden_number=orden["orden_number"],
+                        rest_branch_name=rest_branch.branch_name,
+                        cel_contact=supp_bus_acc.phone_number,  # type: ignore
+                    )
             except Exception as e:
                 logger.error(f"Error sending update status email: {e}")
 
