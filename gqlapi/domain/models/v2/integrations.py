@@ -44,7 +44,7 @@ class IntegrationPartner(ABC):
 @strawberry_type
 class WorkflosVars(ABC):
     id: UUID
-    supplier_business_id: UUID
+    supplier_unit_id: UUID
     vars: str
     created_at: Optional[datetime] = None
 

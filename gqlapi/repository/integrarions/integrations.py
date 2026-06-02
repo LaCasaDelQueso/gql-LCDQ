@@ -240,7 +240,7 @@ class IntegrationWebhookRepository(
         return IntegrationWebhook(**sql_to_domain(_data, IntegrationWebhook))
 
     async def fetch_workflow_vars(
-        self, supplier_business_id: UUID
+        self, supplier_unit_id: UUID
     ) -> WorkflosVars | NoneType:
         """Get workflow vars
 
@@ -262,8 +262,8 @@ class IntegrationWebhookRepository(
             Dict[Any, Any]: WorkflosVars model | NoneType
         """
         _data = await super().fetch(
-            id=supplier_business_id,
-            id_key="supplier_business_id",
+            id=supplier_unit_id,
+            id_key="supplier_unit_id",
             core_element_tablename="workflow_vars",
             core_element_name="workflow_vars",
             core_columns="*",

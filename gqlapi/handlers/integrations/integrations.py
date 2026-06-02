@@ -42,10 +42,10 @@ class IntegrationsWebhookandler(IntegrationWebhookHandlerInterface):
 
     async def get_vars(
         self,
-        supplier_business_id: UUID,
+        supplier_unit_id: UUID,
     ) -> WorkflosVars | NoneType:
         return await self.repository.fetch_workflow_vars(
-            supplier_business_id=supplier_business_id
+            supplier_unit_id=supplier_unit_id
         )
 
     async def get_workflow_integration(
