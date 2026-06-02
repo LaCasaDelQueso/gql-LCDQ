@@ -285,7 +285,7 @@ class StripeWebHookListenerTransferAutoPayments(HTTPEndpoint):
                 repo=IntegrationWebhookRepository(_info)  # type: ignore
             )
             workflow_vars = await integrations_weebhook_partner_handler.get_vars(
-                supplier_business_id=UUID(supplier_unit_id)
+                supplier_unit_id=UUID(supplier_unit_id)
             )
             if not workflow_vars:
                 raise Exception("Error: Workflow vars not found")
