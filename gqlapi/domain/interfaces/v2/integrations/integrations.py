@@ -36,7 +36,7 @@ class IntegrationWebhookHandlerInterface(ABC):
 
     async def get_vars(
         self,
-        supplier_business_id: UUID,
+        supplier_unit_id: UUID,
     ) -> WorkflosVars | NoneType:
         raise NotImplementedError
 
@@ -79,7 +79,7 @@ class IntegrationWebhookRepositoryInterface(ABC):
 
     async def fetch_workflow_vars(
         self,
-        supplier_business_id: UUID,
+        supplier_unit_id: UUID,
     ) -> WorkflosVars | NoneType:
         raise NotImplementedError
 

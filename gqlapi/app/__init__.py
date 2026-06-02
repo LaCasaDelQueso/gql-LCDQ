@@ -145,7 +145,7 @@ class GraphqlAPIApp(StarlettBaseApp):
             "/webhook/stripe-payment-intent", StripeWebHookListener, methods=["POST"]
         )
         self.starlette.add_route(
-            "/webhook/stripe-payment-intent/{supplier_business_id}",
+            "/webhook/stripe-payment-intent/{supplier_unit_id}",
             StripeWebHookListenerTransferAutoPayments,
             methods=["POST"],
         )

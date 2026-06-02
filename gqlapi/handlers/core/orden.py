@@ -2700,7 +2700,7 @@ class OrdenHookListener(OrdenHookListenerInterface):
                     )
                     return
                 workflow_vars = await webhook_handler.get_vars(
-                    _resp[0].supplier.supplier_business.id
+                    _resp[0].details.supplier_unit_id
                 )
                 if not workflow_vars:
                     raise GQLApiException(

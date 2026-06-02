@@ -277,7 +277,7 @@ class StripeWebHookListenerTransferAutoPayments(HTTPEndpoint):
 
     async def post(self, request: Request) -> PlainTextResponse:
         try:
-            supplier_business_id = request.path_params['supplier_business_id']
+            supplier_unit_id = request.path_params['supplier_unit_id']
             _info = InjectedStrawberryInfo(
                 db=sqldatabase, authos=authos_database, mongo=mongodatabase
             )
@@ -285,7 +285,7 @@ class StripeWebHookListenerTransferAutoPayments(HTTPEndpoint):
                 repo=IntegrationWebhookRepository(_info)  # type: ignore
             )
             workflow_vars = await integrations_weebhook_partner_handler.get_vars(
-                UUID(supplier_business_id)
+                supplier_business_id=UUID(supplier_unit_id)
             )
             if not workflow_vars:
                 raise Exception("Error: Workflow vars not found")
