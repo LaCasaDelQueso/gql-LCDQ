@@ -166,7 +166,7 @@ class B2BEcommerceUserHandler(B2BEcommerceUserHandlerInterface):
         return None
 
     async def new_ecommerce_restaurant_user(
-        self, restaurant_branch_id: UUID, email: str
+        self, restaurant_branch_id: UUID, email: str, first_name: str, last_name: str
     ) -> IEcommerceUser:
         rest_branch_list = (
             await self.restaurant_branch_handler.fetch_restaurant_branches(
@@ -243,8 +243,8 @@ class B2BEcommerceUserHandler(B2BEcommerceUserHandlerInterface):
         ecommerce_gql = IEcommerceUser(
             id=ecommerce_id,
             password=password,
-            first_name=rb.name,
-            last_name=rb.name,
+            first_name=first_name,
+            last_name=last_name,
             phone_number=rba["phone_number"],  # type: ignore (safe)
             email=email,
         )
@@ -252,8 +252,8 @@ class B2BEcommerceUserHandler(B2BEcommerceUserHandlerInterface):
             IEcommerceUser(
                 id=ecommerce_id,
                 password=hpswd,
-                first_name=rb.name,
-                last_name=rb.name,
+                first_name=first_name,
+                last_name=last_name,
                 phone_number=rba["phone_number"],  # type: ignore (safe)
                 email=email,
             ),
@@ -278,7 +278,7 @@ class B2BEcommerceUserHandler(B2BEcommerceUserHandlerInterface):
         return ecommerce_gql
 
     async def edit_ecommerce_restaurant_user(
-        self, restaurant_branch_id: UUID, email: str
+        self, restaurant_branch_id: UUID, email: str, first_name: str, last_name:str
     ) -> IEcommerceUser:
         rest_branch_list = (
             await self.restaurant_branch_handler.fetch_restaurant_branches(
@@ -322,14 +322,14 @@ class B2BEcommerceUserHandler(B2BEcommerceUserHandlerInterface):
                 msg="there is no ecommerce",
                 error_code=GQLApiErrorCodeType.FETCH_SQL_DB_EMPTY_RECORD.value,
             )
-        ecommerce_user_by_email = await self.ecommerce_user_repo.fetch_by_email(
-            email=email, ref_secret_key=ecommerce_seller.secret_key
-        )
-        if ecommerce_user_by_email:
-            raise GQLApiException(
-                msg="This email already in use",
-                error_code=GQLApiErrorCodeType.FETCH_SQL_DB_EXISTING_RECORD.value,
-            )
+        # ecommerce_user_by_email = await self.ecommerce_user_repo.fetch_by_email(
+        #     email=email, ref_secret_key=ecommerce_seller.secret_key
+        # )
+        # if ecommerce_user_by_email:
+        #     raise GQLApiException(
+        #         msg="This email already in use",
+        #         error_code=GQLApiErrorCodeType.FETCH_SQL_DB_EXISTING_RECORD.value,
+        #     )
         ecommerce_user = await self.ecommerce_user_repo.fetch(
             eurr.ecommerce_user_id, ref_secret_key=ecommerce_seller.secret_key
         )
@@ -341,8 +341,8 @@ class B2BEcommerceUserHandler(B2BEcommerceUserHandlerInterface):
         edit_ecommerce_user = IEcommerceUser(
             id=ecommerce_user.id,
             password=ecommerce_user.password,
-            first_name=ecommerce_user.first_name,
-            last_name=ecommerce_user.last_name,
+            first_name=first_name,
+            last_name=last_name,
             phone_number=ecommerce_user.phone_number,
             email=email,
         )

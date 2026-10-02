@@ -1175,10 +1175,10 @@ class B2BEcommerceUserMutation:
         permission_classes=[IsAuthenticated, IsAlimaSupplyAuthorized],
     )
     async def post_new_ecommerce_restaurant_user(
-        self, info: StrawberryInfo, restaurant_branch_id: UUID, email: str
+        self, info: StrawberryInfo, restaurant_branch_id: UUID, email: str, first_name: str, last_name: str
     ) -> EcommerceUserGQLResult:  # type: ignore
         # call validation
-        if not restaurant_branch_id or not email:
+        if not restaurant_branch_id or not email or not first_name or not last_name:
             logger.warning("Empty values for creating Ecommerce Restaurant User")
             return OrdenError(
                 msg="Empty values for Ecommerce Restaurant User",
@@ -1211,7 +1211,7 @@ class B2BEcommerceUserMutation:
         try:
             # call handler
             _resp = await _handler.new_ecommerce_restaurant_user(
-                restaurant_branch_id, email
+                restaurant_branch_id, email, first_name, last_name
             )
             return _resp
         except GQLApiException as ge:
@@ -1229,10 +1229,10 @@ class B2BEcommerceUserMutation:
         permission_classes=[IsAuthenticated, IsAlimaSupplyAuthorized],
     )
     async def post_edit_ecommerce_restaurant_user(
-        self, info: StrawberryInfo, restaurant_branch_id: UUID, email: str
+        self, info: StrawberryInfo, restaurant_branch_id: UUID, email: str, first_name: str, last_name: str
     ) -> EcommerceUserGQLResult:  # type: ignore
         # call validation
-        if not restaurant_branch_id or not email:
+        if not restaurant_branch_id or not email or not first_name or not last_name:
             logger.warning("Empty values for creating Ecommerce Restaurant User")
             return OrdenError(
                 msg="Empty values for Ecommerce Restaurant User",
@@ -1264,7 +1264,7 @@ class B2BEcommerceUserMutation:
         try:
             # call handler
             _resp = await _handler.edit_ecommerce_restaurant_user(
-                restaurant_branch_id, email
+                restaurant_branch_id, email, first_name, last_name
             )
             return _resp
         except GQLApiException as ge:

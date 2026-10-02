@@ -331,13 +331,13 @@ class B2BEcommerceUserHandlerInterface(ABC):
 
     @abstractmethod
     async def new_ecommerce_restaurant_user(
-        self, restaurant_branch_id: UUID, email: str
+        self, restaurant_branch_id: UUID, email: str, fisrt_name: str, last_name: str
     ) -> IEcommerceUser:
         raise NotImplementedError
 
     @abstractmethod
     async def edit_ecommerce_restaurant_user(
-        self, restaurant_branch_id: UUID, email: str
+        self, restaurant_branch_id: UUID, email: str, fisrt_name: str, last_name: str
     ) -> IEcommerceUser:
         raise NotImplementedError
 
